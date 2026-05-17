@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estação Café | São Bernardo do Campo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --creme: #f3e7d7;
+      --creme-claro: #fff4e7;
+      --creme-card: #fff1e3;
+      --ferrugem: #a3472f;
+      --ferrugem-escuro: #5b2619;
+      --linha: rgba(163, 71, 47, .35);
+      --sombra: rgba(91, 38, 25, .16);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--creme);
+      color: var(--ferrugem);
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .footer-title {
+      font-family: 'Cinzel', serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 56px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      height: 126px;
+      background: var(--creme-claro);
+      border-top: 4px solid var(--ferrugem-escuro);
+      border-bottom: 1px solid var(--linha);
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 56px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .brand {
+      width: 150px;
+      flex: 0 0 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand img {
+      width: 118px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ferrugem);
+    }
+
+    .nav a {
+      position: relative;
+      padding: 8px 0;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 0;
+      height: 1px;
+      background: var(--ferrugem);
+      transition: width .25s ease;
+    }
+
+    .nav a:hover::after {
+      width: 100%;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 5px;
+      background: var(--ferrugem);
+      color: var(--creme-claro);
+      padding: 13px 30px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #7e3322;
+      box-shadow: 0 12px 28px rgba(91, 38, 25, .18);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ferrugem);
+      border: 1px solid var(--ferrugem);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      color: var(--creme-claro);
+      background: var(--ferrugem);
+    }
+
+    .menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--linha);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--ferrugem);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .hero {
+      position: relative;
+      height: 462px;
+      overflow: hidden;
+      background: var(--creme);
+    }
+
+    .slides {
+      height: 100%;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .75s ease;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(243,231,215,.98) 0%, rgba(243,231,215,.76) 35%, rgba(243,231,215,.05) 68%);
+      z-index: 1;
+    }
+
+    .slide.active {
+      animation: slowZoom 9s ease-in-out forwards;
+    }
+
+    @keyframes slowZoom {
+      from { background-size: 100%; }
+      to { background-size: 106%; }
+    }
+
+    .slide-1 {
+      background-image: url('./assets/hero.jpg');
+    }
+
+    .slide-2 {
+      background-image: url('./assets/banner-aniversario-sbc.jpg');
+    }
+
+    .slide-3 {
+      background-image: url('./assets/banner-combo-mercearia.jpg');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      width: min(1180px, calc(100% - 56px));
+      margin: 0 auto;
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero-text {
+      max-width: 500px;
+    }
+
+    .hero h1 {
+      color: var(--ferrugem);
+      font-size: 49px;
+      line-height: 1.12;
+      letter-spacing: .3px;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      color: var(--ferrugem-escuro);
+      font-size: 19px;
+      line-height: 1.5;
+      width: min(390px, 100%);
+      margin-bottom: 26px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .carousel-arrow {
+      width: 45px;
+      height: 45px;
+      border: 1px solid var(--ferrugem);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ferrugem);
+      font-size: 30px;
+      line-height: 1;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(243,231,215,.34);
+      z-index: 8;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .carousel-arrow:hover {
+      background: rgba(163,71,47,.12);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .carousel-arrow.prev {
+      left: 25px;
+    }
+
+    .carousel-arrow.next {
+      right: 25px;
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9;
+      display: flex;
+      gap: 9px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 1px solid var(--ferrugem);
+      background: transparent;
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .dot.active {
+      width: 30px;
+      background: var(--ferrugem);
+    }
+
+    .section-title {
+      text-align: center;
+      padding: 54px 0 31px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 16px;
+    }
+
+    .title-row::before,
+    .title-row::after {
+      content: "";
+      width: 216px;
+      height: 1px;
+      background: var(--ferrugem);
+      opacity: .78;
+    }
+
+    .section-title h2 {
+      color: var(--ferrugem);
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .section-title p {
+      color: var(--ferrugem-escuro);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .mini-cup {
+      display: inline-flex;
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      background: url('./assets/icone-cafe.png') center/contain no-repeat;
+      margin: 0 12px;
+    }
+
+    .products-section {
+      background: linear-gradient(180deg, #fff1e3 0%, var(--creme) 100%);
+      padding-bottom: 48px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .product-card {
+      background: rgba(255,244,231,.62);
+      border: 1px solid var(--linha);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      min-height: 592px;
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px var(--sombra);
+    }
+
+    .product-photo {
+      height: 288px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .product-body {
+      padding: 25px 22px 27px;
+      min-height: 304px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-icon {
+      height: 54px;
+      width: 54px;
+      object-fit: contain;
+      margin-bottom: 13px;
+    }
+
+    .product-card h3 {
+      color: var(--ferrugem);
+      font-size: 21px;
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    .product-card p {
+      color: var(--ferrugem-escuro);
+      font-size: 15px;
+      line-height: 1.45;
+      width: 240px;
+      max-width: 100%;
+      margin: 0 auto;
+      flex: 1;
+    }
+
+    .small-line {
+      width: 28px;
+      height: 1px;
+      background: var(--ferrugem);
+      margin: 19px 0;
+    }
+
+    .history-section {
+      background: var(--creme);
+      padding: 0 0 0;
+    }
+
+    .history-inner {
+      border-top: 1px solid var(--ferrugem);
+      display: grid;
+      grid-template-columns: 1.12fr 1.1fr 1fr .75fr;
+      gap: 33px;
+      align-items: center;
+      padding: 34px 0 35px;
+    }
+
+    .history-image {
+      width: 100%;
+      max-height: 170px;
+      object-fit: contain;
+    }
+
+    .history-section h2 {
+      color: var(--ferrugem);
+      font-size: 28px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .history-section h3 {
+      color: var(--ferrugem);
+      font-size: 21px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .history-section p {
+      color: var(--ferrugem-escuro);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .quality-box {
+      border-left: 1px solid var(--linha);
+      padding-left: 34px;
+      min-height: 145px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .quality-icon {
+      width: 80px;
+      flex: 0 0 80px;
+    }
+
+    .stamp-icon {
+      width: 118px;
+      margin: auto;
+    }
+
+    .footer-cta {
+      background: linear-gradient(90deg, #9d3e28, #b84a2e);
+      color: var(--creme-claro);
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-inner {
+      width: min(1180px, calc(100% - 56px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 34px;
+    }
+
+    .footer-cup {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: .9;
+    }
+
+    .footer-title {
+      font-size: 25px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .footer-cta p {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .footer-cta .btn-outline {
+      border-color: var(--creme-claro);
+      color: var(--creme-claro);
+      white-space: nowrap;
+    }
+
+    .footer-cta .btn-outline:hover {
+      background: var(--creme-claro);
+      color: var(--ferrugem);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 10, 6, .55);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      background: var(--creme-claro);
+      border: 1px solid var(--linha);
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.28);
+      color: var(--ferrugem-escuro);
+      position: relative;
+      animation: modalIn .25s ease both;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(12px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal h3 {
+      color: var(--ferrugem);
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .modal p {
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--linha);
+      background: transparent;
+      color: var(--ferrugem);
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+      .nav {
+        gap: 18px;
+        font-size: 12px;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .history-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .quality-box {
+        border-left: 0;
+        padding-left: 0;
+      }
+
+      .footer-inner {
+        flex-wrap: wrap;
+        text-align: center;
+        padding: 22px 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .topbar {
+        height: 98px;
+      }
+
+      .brand img {
+        width: 92px;
+      }
+
+      .nav {
+        position: fixed;
+        inset: 98px 0 auto 0;
+        background: var(--creme-claro);
+        border-bottom: 1px solid var(--linha);
+        padding: 24px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        box-shadow: 0 18px 40px rgba(91,38,25,.14);
+      }
+
+      .nav.active {
+        display: flex;
+      }
+
+      .nav a,
+      .nav .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero {
+        height: 500px;
+      }
+
+      .slide {
+        background-position: center right;
+      }
+
+      .slide::before {
+        background: linear-gradient(90deg, rgba(243,231,215,.98) 0%, rgba(243,231,215,.78) 48%, rgba(243,231,215,.18) 100%);
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .carousel-arrow {
+        display: none;
+      }
+
+      .title-row::before,
+      .title-row::after {
+        width: 52px;
+      }
+
+      .section-title h2 {
+        font-size: 25px;
+        white-space: normal;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card {
+        min-height: auto;
+      }
+
+      .product-photo {
+        height: 250px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .footer-title,
+      .footer-cta p {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="header-inner">
+      <a class="brand" href="#inicio" aria-label="Estação Café">
+        <img src="./assets/logo-estacao-cafe.png" alt="Estação Café">
+      </a>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+
+      <nav class="nav" id="navMenu">
+        <a href="#cardapio">Cardápio⌄</a>
+        <a href="#clube">Clube Estação</a>
+        <a href="#gift">Gift Card</a>
+        <a href="#loja">Encontrar Loja</a>
+        <a href="#app">App Estação</a>
+        <a href="#eventos">Eventos</a>
+        <button class="btn" data-modal="comprar">Comprar</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero" aria-label="Carrossel principal">
+      <div class="slides" id="slides">
+        <article class="slide slide-1 active">
+          <div class="hero-content">
+            <div class="hero-text">
+              <h1>Café que conecta histórias</h1>
+              <p>Grãos selecionados e torrados para momentos únicos.</p>
+              <a class="btn" href="#cardapio">Conheça nossos produtos</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide slide-2">
+          <div class="hero-content">
+            <div class="hero-text">
+              <h1>20 de agosto, sabores de história</h1>
+              <p>Combos especiais com até 30% de desconto no aniversário de São Bernardo do Campo.</p>
+              <button class="btn" data-modal="campanha">Ver campanha</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide slide-3">
+          <div class="hero-content">
+            <div class="hero-text">
+              <h1>Combo Mercearia da Casa</h1>
+              <p>Monte sua caixa com 5 produtos artesanais escolhidos por você.</p>
+              <button class="btn" data-modal="combo">Montar combo</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <button class="carousel-arrow prev" id="prevSlide" aria-label="Slide anterior">‹</button>
+      <button class="carousel-arrow next" id="nextSlide" aria-label="Próximo slide">›</button>
+
+      <div class="dots" id="dots" aria-label="Navegação do carrossel">
+        <button class="dot active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="dot" data-slide="1" aria-label="Slide 2"></button>
+        <button class="dot" data-slide="2" aria-label="Slide 3"></button>
+      </div>
+    </section>
+
+    <section class="products-section" id="cardapio">
+      <div class="container">
+        <div class="section-title reveal">
+          <div class="title-row">
+            <h2>Nossos Produtos Caseiros</h2>
+          </div>
+          <p>Feitos com ingredientes selecionados e muito <span class="mini-cup"></span>, para você saborear o que é feito de verdade.</p>
+        </div>
+
+        <div class="products-grid">
+          <article class="product-card reveal">
+            <img class="product-photo" src="./assets/bolo-artesanal.jpg" alt="Bolo caseiro artesanal">
+            <div class="product-body">
+              <img class="product-icon" src="./assets/icone-bolo.png" alt="Ícone bolo">
+              <h3>Bolos Caseiros</h3>
+              <p>Receitas tradicionais feitas no dia, com sabor que lembra casa de vó.</p>
+              <div class="small-line"></div>
+              <button class="btn btn-outline" data-modal="bolo">Saiba mais</button>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <img class="product-photo" src="./assets/pao-de-queijo.jpg" alt="Pão de queijo artesanal">
+            <div class="product-body">
+              <img class="product-icon" src="./assets/icone-pao-de-queijo.png" alt="Ícone pão de queijo">
+              <h3>Pão de Queijo</h3>
+              <p>Crocante por fora, macio por dentro e feito com queijo de verdade.</p>
+              <div class="small-line"></div>
+              <button class="btn btn-outline" data-modal="paoQueijo">Saiba mais</button>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <img class="product-photo" src="./assets/pao-italiano.jpg" alt="Pão italiano artesanal">
+            <div class="product-body">
+              <img class="product-icon" src="./assets/icone-pao-italiano.png" alt="Ícone pão italiano">
+              <h3>Pão Italiano</h3>
+              <p>Casquinha crocante, miolo leve e fresquinho como tem que ser.</p>
+              <div class="small-line"></div>
+              <button class="btn btn-outline" data-modal="paoItaliano">Saiba mais</button>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <img class="product-photo" src="./assets/doce-de-leite.jpg" alt="Doce de leite artesanal">
+            <div class="product-body">
+              <img class="product-icon" src="./assets/icone-doce-de-leite.png" alt="Ícone doce de leite">
+              <h3>Doce de Leite</h3>
+              <p>Cremoso e irresistível, feito com leite selecionado e receita especial.</p>
+              <div class="small-line"></div>
+              <button class="btn btn-outline" data-modal="doceLeite">Saiba mais</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="history-section" id="historia">
+      <div class="container">
+        <div class="history-inner">
+          <div class="reveal">
+            <img class="history-image" src="./assets/historia-estacao-cafe.png" alt="Ilustração histórica da Estação Café">
+          </div>
+
+          <div class="reveal">
+            <h2>Nossa História</h2>
+            <p>A Estação Café nasceu em São Bernardo do Campo com o propósito de valorizar o que é feito com dedicação, tempo e paixão. Mais que café, entregamos experiências que conectam pessoas e constroem histórias.</p>
+            <br>
+            <button class="btn btn-outline" data-modal="historia">Conheça mais</button>
+          </div>
+
+          <div class="quality-box reveal">
+            <img class="quality-icon" src="./assets/logo-graos.png" alt="Grãos selecionados">
+            <div>
+              <h3>Grãos Selecionados</h3>
+              <p>Sustentabilidade e qualidade em cada etapa do nosso processo.</p>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <img class="stamp-icon" src="./assets/selo-amor.png" alt="Feito com amor para você">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-cta" id="clube">
+    <div class="footer-inner">
+      <img class="footer-cup" src="./assets/icone-cafe.png" alt="Ícone café">
+      <div class="footer-title">Faça parte do Clube Estação</div>
+      <p>Ofertas exclusivas, descontos e benefícios para quem ama café.</p>
+      <button class="btn btn-outline" data-modal="clube">Saiba mais</button>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      <h3 id="modalTitle">Título</h3>
+      <p id="modalText">Texto</p>
+      <button class="btn" id="modalAction">Falar pelo WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "5511999999999";
+
+    const modalContent = {
+      comprar: {
+        title: "Comprar na Estação Café",
+        text: "Fale com nossa equipe para consultar disponibilidade, valores e formas de retirada.",
+        action: "Quero comprar"
+      },
+      campanha: {
+        title: "Campanha de Aniversário de SBC",
+        text: "No dia 20 de agosto, teremos combos especiais com até 30% de desconto para celebrar os 473 anos de São Bernardo do Campo.",
+        action: "Quero saber dos combos"
+      },
+      combo: {
+        title: "Combo Mercearia da Casa",
+        text: "Monte sua caixa com 5 produtos artesanais: doces, geleias, bolos, pães, cafés e acompanhamentos.",
+        action: "Quero montar meu combo"
+      },
+      bolo: {
+        title: "Bolos Caseiros",
+        text: "Bolos artesanais preparados com receita tradicional e sabor de casa.",
+        action: "Consultar bolos"
+      },
+      paoQueijo: {
+        title: "Pão de Queijo",
+        text: "Pão de queijo artesanal, perfeito para consumir na hora ou levar para casa.",
+        action: "Consultar pão de queijo"
+      },
+      paoItaliano: {
+        title: "Pão Italiano",
+        text: "Pão italiano com casquinha crocante, miolo leve e preparo artesanal.",
+        action: "Consultar pão italiano"
+      },
+      doceLeite: {
+        title: "Doce de Leite",
+        text: "Doce de leite cremoso, artesanal e ideal para presentear ou acompanhar sua pausa.",
+        action: "Consultar doce de leite"
+      },
+      historia: {
+        title: "Nossa História",
+        text: "A Estação Café valoriza a memória, o trabalho e os sabores de São Bernardo do Campo.",
+        action: "Falar com a Estação"
+      },
+      clube: {
+        title: "Clube Estação",
+        text: "Receba ofertas, novidades e benefícios exclusivos para quem ama café e produtos caseiros.",
+        action: "Entrar no clube"
+      }
+    };
+
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    let currentSlide = 0;
+    let slideTimer;
+
+    function showSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('active', i === currentSlide));
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+      restartTimer();
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function restartTimer() {
+      clearInterval(slideTimer);
+      slideTimer = setInterval(nextSlide, 6500);
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => showSlide(Number(dot.dataset.slide)));
+    });
+    restartTimer();
+
+    const menuBtn = document.getElementById('menuBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    menuBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      document.body.classList.toggle('menu-open');
+      menuBtn.textContent = navMenu.classList.contains('active') ? '×' : '☰';
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        menuBtn.textContent = '☰';
+      });
+    });
+
+    const overlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalAction = document.getElementById('modalAction');
+
+    function openModal(type) {
+      const content = modalContent[type] || modalContent.comprar;
+      modalTitle.textContent = content.title;
+      modalText.textContent = content.text;
+      modalAction.textContent = content.action;
+      modalAction.onclick = () => {
+        const message = encodeURIComponent(content.action + " - Estação Café");
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+      };
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('[data-modal]').forEach(button => {
+      button.addEventListener('click', () => openModal(button.dataset.modal));
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    overlay.addEventListener('click', event => {
+      if (event.target === overlay) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12 });
+
+    reveals.forEach(item => observer.observe(item));
+  </script>
+</body>
+</html>
+
